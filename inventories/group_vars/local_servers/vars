@@ -1,0 +1,19 @@
+---
+ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+# linux configs
+ansible_ssh_private_key_file: ~/.ssh/id_rsa
+ansible_python_interpreter: /usr/bin/python3
+ansible_user: ubuntu
+create_groups: []
+users: []
+delete_users: []
+delete_groups: []
+
+# firewall rules
+firewall_ssh_allow_sources:
+  - { ip: 0.0.0.0/0, comment: "Anywhere" }
+firewall_web_allow_sources:
+  - { ip: 0.0.0.0/0, comment: "Anywhere" }
+firewall_custom_allow_sources:
+  - { port: 9092, ip: 0.0.0.0/0, proto: "tcp", comment: "Kafka from anywhere" }
+  - { port: 2181, ip: 0.0.0.0/0, proto: "tcp", comment: "ZooKeeper from anywhere" }

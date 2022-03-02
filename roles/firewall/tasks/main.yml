@@ -1,0 +1,19 @@
+---
+- name: Allow SSH from sources
+  ufw: rule=allow port=22 proto=tcp src="{{ item.ip }}" comment="{{ item.comment }}"
+  with_items: "{{ firewall_ssh_allow_sources }}"
+
+- name: Allow HTTP from sources
+  ufw: rule=allow port=80 src="{{ item.ip }}" comment="{{ item.comment }}"
+  with_items: "{{ firewall_web_allow_sources }}"
+
+- name: Allow HTTPS from sources
+  ufw: rule=allow port=443 src="{{ item.ip }}" comment="{{ item.comment }}"
+  with_items: "{{ firewall_web_allow_sources }}"
+
+- name: Allow custom from sources
+  ufw: rule=allow port="{{ item.port }}" proto="{{ item.proto }}" src="{{ item.ip }}" comment="{{ item.comment }}"
+  with_items: "{{ firewall_custom_allow_sources }}"
+
+- name: Set firewall default policy
+  ufw: state=enabled policy=reject

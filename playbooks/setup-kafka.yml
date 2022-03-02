@@ -1,0 +1,30 @@
+---
+- hosts: kafkaservers
+  become: yes
+  pre_tasks:
+    - name: Install dependencies
+      apt:
+        name:
+          - python3
+          - python3-pip
+          - python3-setuptools
+        state: latest
+        update_cache: True
+    - name: Enable ufw
+      ufw: state=enabled policy=allow
+
+    - name: Configure the kernel to keep connections alive when enabling the firewall
+      sysctl:
+        name: net.netfilter.nf_conntrack_tcp_be_liberal
+        value: '1'
+        state: present
+        sysctl_set: yes
+        reload: yes
+
+    - name: Reset firewall rules
+      shell: ufw --force reset
+
+  roles:
+    - roles/users
+    - roles/firewall
+    - roles/kafka

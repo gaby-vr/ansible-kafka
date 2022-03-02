@@ -1,0 +1,7 @@
+firewall_ssh_allow_sources:
+  - { ip: 0.0.0.0/0, comment: "Anywhere" }
+firewall_web_allow_sources:
+  - { ip: 0.0.0.0/0, comment: "Anywhere" }
+firewall_custom_allow_sources:
+  - { port: 9092, ip: 0.0.0.0/0, proto: "tcp", comment: "Kafka from anywhere" }
+  - { port: 2181, ip: 0.0.0.0/0, proto: "tcp", comment: "ZooKeeper from anywhere" }

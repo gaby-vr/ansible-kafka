@@ -1,0 +1,42 @@
+# Box / OS
+VAGRANT_BOX = 'ubuntu/focal64'
+# Memorable name for your
+VM_NAME = 'local-kafka1'
+Vagrant.configure(2) do |config|
+  # Vagrant box from Hashicorp
+  config.vm.box = VAGRANT_BOX
+
+  # Actual machine name
+  config.vm.define VM_NAME
+  config.vm.hostname = VM_NAME
+  # Set VM name in Virtualbox
+  config.vm.provider "virtualbox" do |v|
+    v.name = VM_NAME
+    v.memory = 2048
+  end
+
+  # Network setup
+  # DHCP — comment this out if planning on using NAT instead
+  config.vm.network "private_network", ip: "172.28.128.11"
+  # # Port forwarding — uncomment this to use NAT instead of DHCP
+  # config.vm.network "forwarded_port", guest: 10001, host: 10001
+
+  # Sync folder
+  #config.vm.synced_folder HOST_PATH, GUEST_PATH
+  config.vm.synced_folder '../..', '/home/vagrant/' + VM_NAME
+  config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "/home/vagrant/.ssh/pubkey.pub"
+  # Disable default Vagrant folder, use a unique path per project
+  # config.vm.synced_folder '.', '/home/vagrant', disabled: true
+
+  # Provisioning script
+  # Create user ubuntu
+  config.vm.provision "shell", inline: <<-SHELL
+    ## add ubuntu
+    groupadd ubuntu || echo "Group already exists."
+    useradd -m -s /bin/bash -U ubuntu -u 644 --groups ubuntu || echo "User already exists."
+    cp -pr /home/vagrant/.ssh /home/ubuntu/
+    cat /home/vagrant/.ssh/pubkey.pub >> /home/ubuntu/.ssh/authorized_keys
+    chown -R ubuntu:ubuntu /home/ubuntu
+    echo "%ubuntu ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/ubuntu
+  SHELL
+end

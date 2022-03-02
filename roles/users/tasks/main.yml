@@ -1,0 +1,38 @@
+---
+# tasks file for users
+- name: Create user groups
+  group:
+    name: "{{ item }}"
+  with_items: "{{ create_groups }}"
+
+- name: Create users
+  user:
+    name: "{{ item.username }}"
+    groups: "{{ item.groups | join(',') }}"
+    group: "{{ item.group | default(omit) }}"
+    home: "{{ item.home if item.home is defined else '/home/{{ item.username }}' }}"
+    password: "{{ item.password if item.password is defined else '!' }}"
+    shell: "/bin/bash"
+    uid: "{{ item.uid | default(omit) }}"
+  with_items: "{{ users }}"
+
+- name: Add SSH authorized_keys to users
+  authorized_key:
+    user: "{{ item.0.username }}"
+    key: "{{ item.1 }}"
+  with_subelements:
+    - "{{ users }}"
+    - authorized_keys
+
+- name: Delete users
+  user:
+    name: "{{ item }}"
+    state: absent
+    remove: yes
+  with_items: "{{ delete_users }}"
+
+- name: Delete groups
+  group:
+    name: "{{ item }}"
+    state: absent
+  with_items: "{{ delete_groups }}"

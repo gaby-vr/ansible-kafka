@@ -1,0 +1,13 @@
+[webservers]
+local
+
+[dbservers]
+local
+
+[kafkaservers]
+kafka-local1
+
+[local_servers:children]
+webservers
+dbservers
+kafkaservers

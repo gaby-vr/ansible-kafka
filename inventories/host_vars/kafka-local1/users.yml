@@ -1,0 +1,10 @@
+---
+users:
+  - username: ops
+    password: "{{ vault_ops_password | password_hash('sha512') }}"
+    groups:
+      - sudo
+    home: /home/ops
+    authorized_keys:
+      # gabriel-public
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC8Eo7D1DaOGqRtDI+KKIhc5ow1g0TmK41Il2azWvZShSzHZ9h6Fa2fAtABorxeTz0XquTTukeQmrjydBw5UTOGheG/+eAAR6bjKMJ7pj6etB0dU4oY6gGHTgI/MJIT3nrj5OEbDSWLC1kg86xReSenCS0n7WGwvLv8IMDugv2FOH2BZA+5xAsFj6yoMzLpg4jbq3zNQdk3GhJ2MBToWbKX8KRLdJ1+77EtDa1cgCrW4XF7YRKTsttaI7o0nVufuKNO45r3b8sUxBfXwTW11YjPbaz3GV2AcVf6O3AqGcYdSdVqKRxu8IKRr1Ug2DrIgdE4b5eStzqfEgHL4Ju6+Cs0F/4l3pZXRE29yesxDU3fnt+VIh6vKRJfCYUjDKzeA4hqUtkZ4KPt4JrOkM0MT8+ajj/BArRwh86VSKT980BA2XqfvO2UdgWAOcBmOkHgMykSbM1AVraepdJ7dLTBUADTo0jURQVyQ5Arwm6YLv5JmE0AGjdk8mOkLiZ1SGBTQQhvsjR6Ue37Drx6siYl0dqUkscz7sANMYmuZVZ6RAMhospx8VwcGWhpWgcrzRO0cAKv7SEXwhnMC6LRG5eAh+WCc7hf74kjVhnwvL4vckj1GH71ov14xavvDAwtrrWDsyvhEDBEpwJSOrjGklBffjcKSiMiSWBOQR6OclI6mSf21Q== gabriel.rablou@local
