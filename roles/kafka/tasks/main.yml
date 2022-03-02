@@ -97,3 +97,7 @@
     timeout: 30
     state: started
     msg: "Zookeeper not seem to be running"
+
+- name: Create topics
+  shell: "{{ kafka_dir }}/bin/kafka-topics.sh --if-not-exists --create --topic {{ item }} --bootstrap-server localhost:9092"
+  with_items: "{{ create_topics }}"
